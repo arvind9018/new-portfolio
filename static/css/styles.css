@@ -1,0 +1,221 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.nav-link {
+    @apply text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300 px-3 py-2 rounded-md;
+}
+
+.nav-link.active {
+    @apply bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400;
+}
+
+.blog-link {
+    @apply transition-colors duration-300;
+}
+
+.blog-link.active {
+    @apply text-purple-600 dark:text-purple-400;
+}
+
+.blog-link:hover:not(.active) {
+    @apply text-purple-600 dark:text-purple-400;
+}
+
+/* Ensure all major elements transition for dark mode */
+body, html, .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-700, .bg-gray-800, .bg-gray-900, 
+nav, footer, .bg-indigo-100, .bg-indigo-600, .bg-indigo-700, .bg-indigo-800, .bg-indigo-900,
+.text-indigo-600, .text-indigo-800, .text-indigo-400, .text-indigo-300, 
+.border-gray-300, .border-gray-600, .border-gray-700, .border-gray-200,
+.text-gray-800, .text-gray-600, .text-gray-500, .text-gray-400, .text-gray-300, .text-gray-200, .text-gray-900,
+.bg-green-100, .border-green-400, .text-green-700, .bg-red-100, .border-red-400, .text-red-700 {
+    @apply transition-colors duration-300;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #f9fafb;
+    background-image: "";
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.dark #particles-js {
+    background-color: #111827;
+}
+
+.glow {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+.glow:hover {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+}
+
+.dark .glow {
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
+}
+
+.dark .glow:hover {
+    box-shadow: 0 0 30px rgba(129, 140, 248, 0.5);
+}
+
+.transition {
+    transition: all 0.3s ease;
+}
+
+.prose {
+    color: #374151;
+    max-width: 65ch;
+}
+
+.dark .prose {
+    color: #e5e7eb;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+    color: #111827;
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
+    color: #f9fafb;
+}
+
+/* Style images in blog post content */
+#blog .prose img {
+    @apply w-full max-w-md mx-auto rounded-lg mb-6; /* Center images, max-width 28rem (448px), 1.5rem gap */
+}
+
+#scroll-top {
+    transition: all 0.3s ease;
+}
+
+#scroll-top:hover {
+    transform: scale(1.1);
+}
+
+/* Mobile Menu Enhancements */
+#mobile-menu {
+    transition: transform 0.3s ease-in-out !important;
+    z-index: 40 !important;
+}
+
+#mobile-menu.open {
+    transform: translateX(0) !important;
+}
+
+#mobile-menu-button, #mobile-menu-close {
+    @apply p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 !important;
+    z-index: 50 !important;
+}
+
+#mobile-menu.open ~ #mobile-menu-button,
+#mobile-menu-button[aria-expanded="true"] {
+    display: none !important;
+}
+
+#mobile-menu-close {
+    display: none !important;
+}
+
+#mobile-menu.open #mobile-menu-close {
+    display: block !important;
+}
+
+#mobile-menu .text-xl {
+    @apply text-lg font-medium py-3 px-5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300;
+}
+
+#mobile-theme-toggle {
+    @apply w-auto text-base font-medium;
+}
+
+#mobile-menu-button {
+    @apply block text-gray-700 dark:text-gray-200 !important;
+}
+
+/* Add gap between images and text in mobile view */
+#projects .project-card img,
+#blog .blog-card img {
+    @apply mb-6;
+}
+
+#certifications .certification-card img {
+    @apply mr-6;
+}
+
+#certifications .certification-card .description {
+    @apply mt-6;
+}
+
+@media (min-width: 768px) {
+    #mobile-menu-button {
+        @apply hidden !important;
+    }
+    #mobile-menu {
+        @apply hidden !important;
+    }
+    /* Reset gaps for desktop view */
+    #projects .project-card img,
+    #blog .blog-card img {
+        @apply mb-0;
+    }
+    #blog .prose img {
+        @apply mb-8; /* 2rem for desktop */
+    }
+    #certifications .certification-card img {
+        @apply mr-4;
+    }
+    #certifications .certification-card .description {
+        @apply mt-4;
+    }
+}
+.glow {
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+        }
+        .dark .glow {
+            box-shadow: 0 0 15px rgba(165, 180, 252, 0.5);
+        }
+        /* Slide-in animation for mobile menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.hidden {
+            transform: translateX(100%);
+        }
+        #mobile-menu:not(.hidden) {
+            transform: translateX(0);
+        }
+
+.menu-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+        }
+        #mobile-menu:not(.hidden) + .menu-backdrop {
+            display: block;
+        }

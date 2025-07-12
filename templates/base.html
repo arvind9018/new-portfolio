@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Arvind Kumar, a web developer and data scientist based in Jalandhar, India.">
+    <meta name="keywords" content="web developer, data scientist, portfolio, Arvind Kumar">
+    <title>Arvind Kumar - Web Developer & Data Scientist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+    <nav class="fixed w-full z-50 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{{ url_for('home') }}#home" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Arvind Kumar</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url_for('home') }}#home" class="nav-link scroll-link">Home</a>
+                    <a href="{{ url_for('home') }}#about" class="nav-link scroll-link">About</a>
+                    <a href="{{ url_for('home') }}#skills" class="nav-link scroll-link">Skills</a>
+                    <a href="{{ url_for('home') }}#projects" class="nav-link scroll-link">Projects</a>
+                    <a href="{{ url_for('home') }}#education" class="nav-link scroll-link">Education</a>
+                    <a href="{{ url_for('home') }}#blog" class="nav-link scroll-link blog-link">Blog</a>
+                    <a href="{{ url_for('certifications_page') }}" class="nav-link {{ 'active' if request.path == url_for('certifications_page') }}">Certifications</a>
+                    <a href="{{ url_for('home') }}#contact" class="nav-link scroll-link">Contact</a>
+                    <button id="theme-toggle" class="p-3 rounded-full focus:outline-none bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors duration-300" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden text-indigo-600 dark:text-indigo-400 text-lg"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400 text-lg"></i>
+                    </button>
+                </div>
+                <div class="flex md:hidden items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-300 focus:outline-none z-50" aria-expanded="false">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 z-40 transform translate-x-full transition-transform duration-300">
+            <div class="flex justify-end p-4">
+                <button id="mobile-menu-close" class="text-gray-700 dark:text-gray-300 focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center h-full space-y-6">
+                <a href="{{ url_for('home') }}#home" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">Home</a>
+                <a href="{{ url_for('home') }}#about" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">About</a>
+                <a href="{{ url_for('home') }}#skills" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">Skills</a>
+                <a href="{{ url_for('home') }}#projects" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">Projects</a>
+                <a href="{{ url_for('home') }}#education" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">Education</a>
+                <a href="{{ url_for('home') }}#blog" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link blog-link">Blog</a>
+                <a href="{{ url_for('certifications_page') }}" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">Certifications</a>
+                <a href="{{ url_for('home') }}#contact" class="text-xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 scroll-link">Contact</a>
+                <button id="mobile-theme-toggle" class="flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-100 dark:bg-indigo-900 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors duration-300">
+                    <i class="fas fa-moon dark:hidden text-indigo-600 dark:text-indigo-400 text-lg"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400 text-lg"></i>
+                    <span class="text-gray-700 dark:text-gray-300">Toggle Theme</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-16">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-12 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Arvind Kumar</h3>
+                    <p class="text-gray-400">Web Developer & Data Scientist passionate about building innovative solutions.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('home') }}#home" class="text-gray-400 hover:text-white transition scroll-link">Home</a></li>
+                        <li><a href="{{ url_for('home') }}#about" class="text-gray-400 hover:text-white transition scroll-link">About</a></li>
+                        <li><a href="{{ url_for('home') }}#projects" class="text-gray-400 hover:text-white transition scroll-link">Projects</a></li>
+                        <li><a href="{{ url_for('home') }}#blog" class="text-gray-400 hover:text-white transition scroll-link">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <ul class="space-y-2">
+                        {% for platform, url in config.SOCIAL_LINKS.items() %}
+                        <li><a href="{{ url }}" class="text-gray-400 hover:text-white transition" aria-label="{{ platform|capitalize }} Profile">{{ platform|capitalize }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <p class="text-gray-400">arvindkumar18320@gmail.com</p>
+                    <p class="text-gray-400">+91-7658009018</p>
+                    <a href="{{ url_for('home') }}#contact" class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition scroll-link">Get in Touch</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2025 Arvind Kumar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scroll-top" class="fixed bottom-8 right-8 bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition transform hover:scale-110 hidden" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
