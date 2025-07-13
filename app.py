@@ -4,16 +4,21 @@ from flask_mail import Mail, Message
 from datetime import datetime
 import bleach
 import os
+import json
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'  # Replace with secure key
+app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///portfolio.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Mail config
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'arvindkumar18320@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'your-app-password'  # Replace with Gmail app password
+app.config['MAIL_USERNAME'] = 'arvindkumar18320@gmail.com'  # Your email
+app.config['MAIL_PASSWORD'] = 'nlzk tdrm zdgn vthp'  # Use Gmail App Password
+
+# Social links config
 app.config['SOCIAL_LINKS'] = {
     'github': 'https://github.com/arvind9018',
     'linkedin': 'https://linkedin.com/in/arvind-kumar-9b898b247/',
@@ -23,7 +28,8 @@ app.config['SOCIAL_LINKS'] = {
 db = SQLAlchemy(app)
 mail = Mail(app)
 
-# Database Models
+# ========== Models ==========
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -42,7 +48,19 @@ class Certification(db.Model):
     date = db.Column(db.String(20), nullable=False)
     url = db.Column(db.String(200), nullable=False)
 
-# Context Processor for Image Fallback
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(100), nullable=False)
+    tech_stack = db.Column(db.String(200), nullable=False)
+    demo = db.Column(db.String(200), nullable=True)   # ✅ New field
+    github = db.Column(db.String(200), nullable=True) # ✅ New field
+    category = db.Column(db.String(50), nullable=False)
+
+
+# ========== Utilities ==========
+
 @app.context_processor
 def utility_processor():
     def get_image_path(filename):
@@ -53,106 +71,39 @@ def utility_processor():
         return path if os.path.exists(os.path.join(app.root_path, path)) else default_image
     return dict(get_image_path=get_image_path)
 
-# Routes
+# ========== Routes ==========
+
 @app.route('/')
 def home():
     posts = Post.query.order_by(Post.date.desc()).limit(3).all()
-    Certifications = Certification.query.limit(3).all()
-    projects = [
-        {
-            'title': 'E-commerce Platform',
-            'description': 'A full-featured online store with payment integration and admin dashboard.',
-            'image': 'project1.jpg',
-            'tags': ['Flask', 'SQLAlchemy', 'Stripe API', 'Tailwind CSS'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Data Visualization Dashboard',
-            'description': 'Interactive dashboard for exploring and visualizing complex datasets.',
-            'image': 'project2.jpg',
-            'tags': ['Python', 'Pandas', 'Plotly', 'Flask'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Portfolio Website',
-            'description': 'A responsive personal portfolio website built with Flask and Tailwind CSS.',
-            'image': 'project3.jpg',
-            'tags': ['Flask', 'Tailwind', 'JavaScript', 'GSAP'],
-            'demo': '#',
-            'github': '#'
-        }
-    ]
+    certifications = Certification.query.order_by(Certification.id.desc()).limit(3).all()
+    projects = Project.query.order_by(Project.id.desc()).limit(3).all()
     education = [
         {
-            'title': 'Bachelor of Technology in Computer Science',
-            'institution': 'Lovely Professional University',
-            'location': 'Jalandhar, Punjab, India',
-            'duration': '2020 - 2024'
-        },
-        {
-            'title': 'High School (12th Grade)',
-            'institution': 'Kendriya Vidyalaya',
-            'location': 'Jalandhar, Punjab, India',
-            'duration': '2018 - 2020'
-        }
+        'title': 'Bachelor of Technology in Computer Science',
+        'institution': 'Lovely Professional University',
+        'location': 'Phagwara, Punjab, India',
+        'duration': '2022 - 2026'
+    },
+    {
+        'title': 'Senior Secondary (12th Grade)',
+        'institution': 'Govt. Senior Secondary School',
+        'location': 'Nawanshahr, Punjab, India',
+        'duration': '2019 - 2020'
+    },
+    {
+        'title': 'Matriculation (10th Grade)',
+        'institution': 'Govt. Senior Secondary School',
+        'location': 'Nawanshahr, Punjab, India',
+        'duration': '2017 - 2018'
+    }
     ]
-    return render_template('home.html', posts=posts, certifications=Certifications, projects=projects, education=education)
+    return render_template('home.html', posts=posts, certifications=certifications, projects=projects, education=education)
 
 @app.route('/projects')
 def projects():
-    projects = [
-        {
-            'title': 'E-commerce Platform',
-            'description': 'A full-featured online store with payment integration and admin dashboard.',
-            'image': 'project1.jpg',
-            'tags': ['Flask', 'SQLAlchemy', 'Stripe API', 'Tailwind CSS'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Data Visualization Dashboard',
-            'description': 'Interactive dashboard for exploring and visualizing complex datasets.',
-            'image': 'project2.jpg',
-            'tags': ['Python', 'Pandas', 'Plotly', 'Flask'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Portfolio Website',
-            'description': 'A responsive personal portfolio website built with Flask and Tailwind CSS.',
-            'image': 'project3.jpg',
-            'tags': ['Flask', 'Tailwind', 'JavaScript', 'GSAP'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Task Management App',
-            'description': 'A productivity app for managing tasks with teams and deadlines.',
-            'image': 'project4.jpg',  # Changed to avoid duplicate
-            'tags': ['Django', 'PostgreSQL', 'React'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Weather Forecast App',
-            'description': 'Real-time weather forecasting application with location detection.',
-            'image': 'project5.jpg',  # Changed to avoid duplicate
-            'tags': ['JavaScript', 'API Integration', 'Geolocation'],
-            'demo': '#',
-            'github': '#'
-        },
-        {
-            'title': 'Recipe Finder',
-            'description': 'Discover recipes based on ingredients you have at home.',
-            'image': 'project6.jpg',  # Changed to avoid duplicate
-            'tags': ['React', 'Node.js', 'MongoDB'],
-            'demo': '#',
-            'github': '#'
-        }
-    ]
-    return render_template('projects.html', projects=projects)
+    all_projects = Project.query.order_by(Project.id.desc()).all()
+    return render_template('projects.html', projects=all_projects)
 
 @app.route('/blog')
 def blog():
@@ -166,7 +117,7 @@ def blog_post(post_id):
 
 @app.route('/certifications')
 def certifications_page():
-    certifications = Certification.query.all()
+    certifications = Certification.query.order_by(Certification.id.desc()).all()
     return render_template('certifications.html', certifications=certifications)
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -183,127 +134,60 @@ def contact():
         except Exception as e:
             flash('Error sending message. Please try again later.', 'error')
         return redirect(url_for('contact'))
-    return render_template('contact.html', success='success' in request.args)
+    return render_template('contact.html')
 
-# Initialize Database
-with app.app_context():
-    db.create_all()
-    if not Post.query.first() and not Certification.query.first():
-        sample_posts = [
-            Post(
-                title='My First Blog Post',
-                date=datetime(2025, 7, 1),
-                image='my.jpg',
-                category='Web Development',
-                excerpt='An introduction to my journey in web development.',
-                content=bleach.clean('<p>This is a sample blog post content about web development.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            ),
-            Post(
-                title='Data Science Insights',
-                date=datetime(2025, 7, 5),
-                image='blog2.jpg',
-                category='Data Science',
-                excerpt='Exploring data visualization techniques with Python.',
-                content=bleach.clean('<p>This post covers Pandas, Matplotlib, and more.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            ),
-            Post(
-                title='Building APIs with Flask',
-                date=datetime(2025, 7, 10),
-                image='blog3.jpg',
-                category='Web Development',
-                excerpt='A guide to creating RESTful APIs using Flask.',
-                content=bleach.clean('<p>Learn how to build APIs with Flask and SQLAlchemy.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            )
-        ]
-        sample_certs = [
-            Certification(
-                title='Google Data Analytics',
-                issuer='Google',
-                image='cert1.jpg',
-                description='Professional certification in data analysis and visualization',
-                date='July 2024',
-                url='https://example.com/certificate1'
-            ),
-            Certification(
-                title='React Frontend Developer',
-                issuer='Meta',
-                image='cert2.jpg',
-                description='Certification in modern React development',
-                date='August 2024',
-                url='https://example.com/certificate2'
-            ),
-            Certification(
-                title='Python Developer',
-                issuer='Python Institute',
-                image='cert3.jpg',
-                description='Certified Python programmer with specialization in web development',
-                date='September 2024',
-                url='https://example.com/certificate3'
-            )
-        ]
-        db.session.add_all(sample_posts + sample_certs)
-        db.session.commit()
+# ========== Reset DB ==========
+
 @app.route('/reset_db')
 def reset_db():
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-        sample_posts = [
-            Post(
-                title='My First Blog Post',
-                date=datetime(2025, 7, 1),
-                image='my.jpg',
-                category='Web Development',
-                excerpt='An introduction to my journey in web development.',
-                content=bleach.clean('<p>This is a sample blog post content about web development.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            ),
-            Post(
-                title='Data Science Insights',
-                date=datetime(2025, 7, 5),
-                image='blog2.jpg',
-                category='Data Science',
-                excerpt='Exploring data visualization techniques with Python.',
-                content=bleach.clean('<p>This post covers Pandas, Matplotlib, and more.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            ),
-            Post(
-                title='Building APIs with Flask',
-                date=datetime(2025, 7, 10),
-                image='blog3.jpg',
-                category='Web Development',
-                excerpt='A guide to creating RESTful APIs using Flask.',
-                content=bleach.clean('<p>Learn how to build APIs with Flask and SQLAlchemy.</p>', tags=['p', 'h1', 'h2', 'a', 'strong'], attributes={'a': ['href']})
-            )
-        ]
-        sample_certs = [
-            Certification(
-                title='Google Data Analytics',
-                issuer='Google',
-                image='cert1.jpg',
-                description='Professional certification in data analysis and visualization',
-                date='July 2024',
-                url='https://example.com/certificate1'
-            ),
-            Certification(
-                title='React Frontend Developer',
-                issuer='Meta',
-                image='cert2.jpg',
-                description='Certification in modern React development',
-                date='August 2024',
-                url='https://example.com/certificate2'
-            ),
-            Certification(
-                title='Python Developer',
-                issuer='Python Institute',
-                image='cert3.jpg',
-                description='Certified Python programmer with specialization in web development',
-                date='September 2024',
-                url='https://example.com/certificate3'
-            )
-        ]
-        db.session.add_all(sample_posts + sample_certs)
-        db.session.commit()
-    return "Database reset and sample data added."
+    db.drop_all()
+    db.create_all()
 
+    try:
+        with open('data.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+            for item in data.get('posts', []):
+                post = Post(
+                    title=item['title'],
+                    date=datetime.strptime(item['date'], '%Y-%m-%d'),
+                    category=item['category'],
+                    excerpt=item['excerpt'],
+                    content=bleach.clean(item['content'], tags=['p', 'ul', 'li', 'h2', 'h3', 'strong', 'br', 'div', 'span'], attributes={'a': ['href']}),
+                    image=item['image']
+                )
+                db.session.add(post)
+
+            for item in data.get('certifications', []):
+                cert = Certification(
+                    title=item['title'],
+                    issuer=item['issuer'],
+                    image=item['image'],
+                    description=item['description'],
+                    date=item['date'],
+                    url=item['url']
+                )
+                db.session.add(cert)
+            
+            for item in data.get('projects', []):
+                project = Project(
+                    title=item['title'],
+                    description=item['description'],
+                    image=item['image'],
+                    tech_stack=item['tech_stack'],
+                    demo=item.get('demo', ''),
+                    github=item.get('github', ''),
+                    category=item.get('category', 'other')
+                )
+                db.session.add(project)
+
+            db.session.commit()
+    except Exception as e:
+        return f"❌ Error loading data.json: {e}"
+
+    return "✅ Database reset and sample data loaded successfully!"
+
+# ========== Run App ==========
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+    app.run(debug=True)
