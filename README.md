@@ -3,7 +3,7 @@
 
 Welcome to my modern developer portfolio built using **Flask**, **Tailwind CSS**, **JavaScript**, and **SQLAlchemy**. The project includes animations, dark/light mode toggle, AOS effects, and a functional contact form that sends emails via Gmail SMTP.
 
-🌐 **Live Site**: [arvind-new-portfolio.onrender.com](https://arvind-new-portfolio.onrender.com/)
+🌐 **Live Site**: [arvind-new-portfolio.onrender.com](https://arvind.up.railway.app/)
 
 ---
 
@@ -15,7 +15,7 @@ Welcome to my modern developer portfolio built using **Flask**, **Tailwind CSS**
 - Contact form with email functionality using Flask-Mail
 - Embedded Google Maps
 - Fully responsive (mobile, tablet, desktop)
-- Hosted on [Render](https://render.com/)
+- Hosted on [Render](https://railway.com/)
 
 ---
 
@@ -25,7 +25,7 @@ Welcome to my modern developer portfolio built using **Flask**, **Tailwind CSS**
 - **Backend:** Python (Flask)
 - **Database:** SQLite (via SQLAlchemy)
 - **Email:** Flask-Mail (Gmail SMTP)
-- **Hosting:** Render (Free Tier)
+- **Hosting:** Railway (Free Tier)
 
 ---
 
@@ -73,7 +73,7 @@ Then visit: http://127.0.0.1:5000/
 
 ---------------------------
 📦 Deployment 
-Deployed on: Render
+Deployed on: Railway
 To deploy:
 
 1.Push code to GitHub
@@ -99,7 +99,7 @@ Tailwind CSS
 
 AOS (Animate on Scroll)
 
-Render Hosting
+Railway Hosting
 
 ------------------------
 📝 License
